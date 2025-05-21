@@ -3,17 +3,21 @@ package com.patobus.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Empresa {
+public class LinhaHorario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEmpresa;
+    private Long idHorario;
 
-    private String nome;
+    private LocalTime horario;
 
-    private String cnpj;
+    @ManyToOne
+    @JoinColumn(name = "id_linha")
+    private Linha linha;
 }

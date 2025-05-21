@@ -7,13 +7,21 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Empresa {
+public class Rota {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEmpresa;
+    private Long idRota;
 
     private String nome;
 
-    private String cnpj;
+    @Lob
+    private String pontos;
+
+    @Lob
+    private String descricao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_linha")
+    private Linha linha;
 }

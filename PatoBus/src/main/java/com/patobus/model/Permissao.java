@@ -7,13 +7,12 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Empresa {
+public class Permissao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEmpresa;
+    private Long idPermissao;
 
+    @Column(unique = true)
     private String nome;
-
-    private String cnpj;
 }
