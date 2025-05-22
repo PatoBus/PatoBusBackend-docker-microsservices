@@ -3,6 +3,7 @@ package com.patobus.controller;
 import com.patobus.dto.EmpresaDTO;
 import com.patobus.model.Empresa;
 import com.patobus.service.EmpresaService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +18,17 @@ public class EmpresaController {
     @Autowired
     private EmpresaService empresaService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     // Converte Empresa para EmpresaDTO
     private EmpresaDTO toDTO(Empresa empresa) {
-        return new EmpresaDTO(
-            empresa.getIdEmpresa(), 
-            empresa.getNome(), 
-            empresa.getCnpj()
-        );
+        return modelMapper.map(empresa, EmpresaDTO.class);
     }
 
     // Converte EmpresaDTO para Empresa
     private Empresa toEntity(EmpresaDTO dto) {
-        return new Empresa(
-            dto.getIdEmpresa(), 
-            dto.getNome(), 
-            dto.getCnpj()
-        );
+        return modelMapper.map(dto, Empresa.class);
     }
 
     @GetMapping
@@ -72,10 +68,13 @@ public class EmpresaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (empresaService.findById(id)!=null) {
+        if (empresaService.findById(id).isPresent()) {
             empresaService.deleteById(id);
             return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
+
+
 }
