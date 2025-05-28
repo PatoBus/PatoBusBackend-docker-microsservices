@@ -11,9 +11,11 @@ import lombok.*;
 public class UsuarioPermissao {
 
     @Id
+    @Column(name = "id_usuario")
     private Long idUsuario;
 
     @Id
+    @Column(name = "id_permissao")
     private Long idPermissao;
 
     @ManyToOne
