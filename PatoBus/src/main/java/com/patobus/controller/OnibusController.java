@@ -16,13 +16,11 @@ public class OnibusController {
     @Autowired
     private OnibusService onibusService;
 
-    // ✅ GET - Listar todos os ônibus
     @GetMapping
     public ResponseEntity<List<Onibus>> getAll() {
         return ResponseEntity.ok(onibusService.findAll());
     }
 
-    // ✅ GET - Buscar ônibus por ID
     @GetMapping("/{id}")
     public ResponseEntity<Onibus> getById(@PathVariable Long id) {
         return onibusService.findById(id)
@@ -30,13 +28,11 @@ public class OnibusController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ POST - Cadastrar novo ônibus
     @PostMapping
     public ResponseEntity<Onibus> create(@RequestBody Onibus onibus) {
         return ResponseEntity.ok(onibusService.save(onibus));
     }
-
-    // ✅ PUT - Atualizar ônibus existente
+    
     @PutMapping("/{id}")
     public ResponseEntity<Onibus> update(@PathVariable Long id, @RequestBody Onibus onibus) {
         return onibusService.findById(id)
@@ -47,7 +43,6 @@ public class OnibusController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ DELETE - Remover ônibus por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (onibusService.findById(id).isPresent()) {
@@ -57,7 +52,7 @@ public class OnibusController {
         return ResponseEntity.notFound().build();
     }
 
-    // ✅ GET - Buscar horários de um ônibus específico
+    
     @GetMapping("/{id}/horarios")
     public ResponseEntity<OnibusHorarioDTO> getHorarios(@PathVariable Long id) {
         try {
@@ -68,7 +63,7 @@ public class OnibusController {
         }
     }
 
-        // GET - Retorna o ônibus com todos os horários da linha associada
+    
     @GetMapping("/{id}/com-horarios")
     public ResponseEntity<OnibusHorarioDTO> getOnibusComHorarios(@PathVariable Long id) {
         try {
@@ -79,7 +74,7 @@ public class OnibusController {
         }
     }
 
-    // GET - Retorna todos os ônibus com seus horários
+   
     @GetMapping("/com-horarios")
     public ResponseEntity<List<OnibusHorarioDTO>> getAllWithHorarios() {
         List<OnibusHorarioDTO> onibusComHorarios = onibusService.findAllOnibusHorarios();
