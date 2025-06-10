@@ -18,6 +18,6 @@ public class Linha {
     private Float valor;
 
     @ManyToOne
-    @JoinColumn(name = "id_empresa")
+    @JoinColumn(name = "id_empresa", nullable = false)
     private Empresa empresa;
 }

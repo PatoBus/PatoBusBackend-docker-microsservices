@@ -21,7 +21,7 @@ public class OnibusController {
         return ResponseEntity.ok(onibusService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/onibus/{id}")
     public ResponseEntity<Onibus> getById(@PathVariable Long id) {
         return onibusService.findById(id)
                 .map(ResponseEntity::ok)
@@ -33,7 +33,7 @@ public class OnibusController {
         return ResponseEntity.ok(onibusService.save(onibus));
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<Onibus> update(@PathVariable Long id, @RequestBody Onibus onibus) {
         return onibusService.findById(id)
                 .map(existing -> {
@@ -43,7 +43,7 @@ public class OnibusController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (onibusService.findById(id).isPresent()) {
             onibusService.deleteById(id);
