@@ -16,28 +16,24 @@ public class OnibusController {
     @Autowired
     private OnibusService onibusService;
 
-
     @GetMapping
     public ResponseEntity<List<Onibus>> getAll() {
         return ResponseEntity.ok(onibusService.findAll());
     }
 
-    
-    @GetMapping("/{id}")
+    @GetMapping("/onibus/{id}")
     public ResponseEntity<Onibus> getById(@PathVariable Long id) {
         return onibusService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-  
     @PostMapping
     public ResponseEntity<Onibus> create(@RequestBody Onibus onibus) {
         return ResponseEntity.ok(onibusService.save(onibus));
     }
-
-   
-    @PutMapping("/{id}")
+    
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<Onibus> update(@PathVariable Long id, @RequestBody Onibus onibus) {
         return onibusService.findById(id)
                 .map(existing -> {
@@ -47,7 +43,7 @@ public class OnibusController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (onibusService.findById(id).isPresent()) {
             onibusService.deleteById(id);
@@ -56,7 +52,7 @@ public class OnibusController {
         return ResponseEntity.notFound().build();
     }
 
-    // ✅ GET - Buscar horários de um ônibus específico
+    
     @GetMapping("/{id}/horarios")
     public ResponseEntity<OnibusHorarioDTO> getHorarios(@PathVariable Long id) {
         try {
@@ -67,7 +63,7 @@ public class OnibusController {
         }
     }
 
-        // GET - Retorna o ônibus com todos os horários da linha associada
+    
     @GetMapping("/{id}/com-horarios")
     public ResponseEntity<OnibusHorarioDTO> getOnibusComHorarios(@PathVariable Long id) {
         try {
@@ -78,7 +74,7 @@ public class OnibusController {
         }
     }
 
-    // GET - Retorna todos os ônibus com seus horários
+   
     @GetMapping("/com-horarios")
     public ResponseEntity<List<OnibusHorarioDTO>> getAllWithHorarios() {
         List<OnibusHorarioDTO> onibusComHorarios = onibusService.findAllOnibusHorarios();
