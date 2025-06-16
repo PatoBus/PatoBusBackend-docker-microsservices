@@ -1,55 +1,53 @@
-// package com.patobus.controller;
+package com.patobus.controller;
 
-// import com.patobus.model.Linha;
-// import com.patobus.service.LinhaService;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
+import com.patobus.model.Linha;
+import com.patobus.service.LinhaService;
 
-// import java.util.List;
-// import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/linhas")
-// public class LinhaController {
+import java.util.List;
 
-//     @Autowired
-//     private LinhaService linhaService;
+@RestController
+@RequestMapping("/linhas")
+public class LinhaController {
 
-//     @GetMapping
-//     public List<Linha> findAll() {
-//         return linhaService.findAll();
-//     }
+    @Autowired
+    private LinhaService linhaService;
 
-//     @GetMapping("/{id}")
-//     public ResponseEntity<Linha> findById(@PathVariable Long id) {
-//         return linhaService.findById(id)
-//                 .map(ResponseEntity::ok)
-//                 .orElse(ResponseEntity.notFound().build());
-//     }
+    @GetMapping
+    public ResponseEntity<List<Linha>> listarTodas() {
+        return ResponseEntity.ok(linhaService.findAll());
+    }
 
-//     @PostMapping
-//     public Linha create(@RequestBody Linha linha) {
-//         return linhaService.save(linha);
-//     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Linha> buscarPorId(@PathVariable Long id) {
+        return linhaService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-//     // @PutMapping("/{id}")
-//     // public ResponseEntity<Linha> update(@PathVariable Long id, @RequestBody Linha linha) {
-//     //     return linhaService.findById(id)
-//     //             .map(l -> {
-//     //                 linha.setId(id);
-//     //                 return ResponseEntity.ok(linhaService.save(linha));
-//     //             })
-//     //             .orElse(ResponseEntity.notFound().build());
-//     // }
+    @PostMapping
+    public ResponseEntity<Linha> criar(@RequestBody Linha linha) {
+        return ResponseEntity.ok(linhaService.save(linha));
+    }
 
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<Void> delete(@PathVariable Long id) {
-//         return linhaService.findById(id)
-//                 .map(l -> {
-//                     linhaService.deleteById(id);
-//                     return ResponseEntity.noContent().<Void>build();
-//                 })
-//                 .orElse(ResponseEntity.notFound().build());
-//     }
-// }
+    @PutMapping("/{id}")
+    public ResponseEntity<Linha> atualizar(@PathVariable Long id, @RequestBody Linha dados) {
+        return linhaService.findById(id).map(existente -> {
+            existente.setNome(dados.getNome());
+            existente.setEmpresa(dados.getEmpresa());
+            return ResponseEntity.ok(linhaService.save(existente));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (linhaService.findById(id).isPresent()) {
+            linhaService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+}

@@ -16,13 +16,13 @@ public class OnibusController {
     @Autowired
     private OnibusService onibusService;
 
-    // ✅ GET - Listar todos os ônibus
+
     @GetMapping
     public ResponseEntity<List<Onibus>> getAll() {
         return ResponseEntity.ok(onibusService.findAll());
     }
 
-    // ✅ GET - Buscar ônibus por ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<Onibus> getById(@PathVariable Long id) {
         return onibusService.findById(id)
@@ -30,13 +30,13 @@ public class OnibusController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ POST - Cadastrar novo ônibus
+  
     @PostMapping
     public ResponseEntity<Onibus> create(@RequestBody Onibus onibus) {
         return ResponseEntity.ok(onibusService.save(onibus));
     }
 
-    // ✅ PUT - Atualizar ônibus existente
+   
     @PutMapping("/{id}")
     public ResponseEntity<Onibus> update(@PathVariable Long id, @RequestBody Onibus onibus) {
         return onibusService.findById(id)
@@ -47,7 +47,6 @@ public class OnibusController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ DELETE - Remover ônibus por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (onibusService.findById(id).isPresent()) {
